@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stanley Akegbeotu - AI Prototyping Console</title>
+    <title>Stanley Akegbeotu - potfoilo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -244,6 +244,11 @@
             color: var(--color-surface);
         }
 
+        .about-content {
+    text-align: center;
+    /* ... other styles ... */
+}
+
         /* SECTION HEADINGS */
         .section-heading {
             font-family: 'Share Tech Mono', monospace;
@@ -400,7 +405,7 @@
         /* CERTIFICATION CARD SPECIFIC STYLES */
         /* ==================================== */
         .cert-card {
-            z-index: 1; /* Default z-index for normal flow */
+            z-index: aut10; /* Default z-index for normal flow */
         }
         .cert-front {
             /* Overrides card-front padding and alignment for image display */
@@ -410,14 +415,9 @@
             text-align: center;
         }
 
-        /* === CHANGE 3: The ultimate Z-INDEX fix (was already added, but important to confirm) === */
-        .cert-card.flipped {
-            z-index: 10;
-        }
-
         .cert-image {
             width: 100%;
-            height: 65%; /* Image takes 65% of card height */
+            height: 60%; /* Image takes 65% of card height */
             object-fit: cover;
             border-radius: 0.5rem 0.5rem 0 0;
         }
@@ -477,7 +477,9 @@
         .project-card h3 {
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.1rem;
+
             margin: 0.75rem 0 0.2rem;
+            text-align: center;
         }
         .project-card small {
             opacity: 0.7;
@@ -723,15 +725,74 @@
                 margin-bottom: 0;
             }
         }
-    </style>
+        /* ==================================== */
+/* NEW: WATER DROP STYLES */
+/* ==================================== */
+#water-effect-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Crucial: ensures it doesn't block clicks */
+    z-index: -2; /* Below the #particle-canvas (-1) */
+    overflow: hidden;
+}
+
+/* The individual drops */
+.water-drop {
+    position: absolute;
+    top: -20px; /* Start slightly above the viewport */
+    /* Random horizontal offset from 0px is applied via JS */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(60, 197, 255, 0.1); /* Very transparent light blue */
+    box-shadow: 0 0 5px rgba(60, 197, 255, 0.4);
+    animation: fall-animation 4.5s linear forwards; /* 4.5s fall time */
+    opacity: 0; /* Starts invisible */
+}
+
+/* Animation for the drop to fall the height of the screen */
+@keyframes fall-animation {
+    0% {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(100vh); /* Falls the entire viewport height */
+        opacity: 0; /* Disappear upon impact */
+    }
+}
+
+/* The accumulated "piling" water at the bottom */
+#water-level {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0; /* Starts empty */
+    background-color: rgba(60, 197, 255, 0.05); /* Extremely transparent fill */
+    /* The transition time is set dynamically by JS to match the drop interval */
+}
+/* ==================================== */
+ </style>
 </head>
 <body>
 
     <canvas id="particle-canvas"></canvas>
 
+<!-- NEW: Water Drop Effect Container (Z-index: -2) -->
+<div id="water-effect-container">
+    <div id="water-level"></div>
+</div>
+
     <!-- Header & Navigation -->
     <header>
-        <div class="logo"><span class="text-accent">Stanley AKEGBEOTU</div>
+        <div class="logo"><span class="text-accent">Stanley AKEGBEOTU</span></div>
         <div class="header-controls">
             <!-- Mode Toggle Button -->
             <button id="mode-toggle" aria-label="Toggle dark and light mode">
@@ -777,19 +838,28 @@
         <a href="#contact" class="cta-button">INITIATE PROJECT &rarr;</a>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="section container">
-        <h2 class="section-heading">ABOUT ME</h2>
-        <div class="bg-surface rounded-lg border-code" style="padding: 1.5rem;">
-            <p>
-                I’m Stanley Akegbeotu, a creative and motivated web developer passionate about building AI-powered web applications , websits and digital solutions that make a real-world impact. With hands-on experience in tools like git & github , vscode, WordPress, Firebase, Figma, and AI platforms, I design and prototype projects that are both functional and user-focused.
- </p>
-            <p>
-                I specialize in creating and prototyping modern applications that blend artificial intelligence, web technologies, and user-friendly design. My portfolio includes projects like a healthcare referral system, an AI companion app, and AI-powered image editing tools, all showcasing my ability to integrate creativity with technical execution. Skilled in platforms such as WordPress, Firebase Studio, v0.dev, and Gemini AI, I also bring knowledge of Google Workspace, Microsoft Office, and ad platforms like TikTok Ads. As an ALX-trained learner with growing expertise in frontend development, project management, and teamwork, I am constantly improving my skills in GitHub, Slack, and Sheets while working toward becoming a full-stack developer and exploring machine learning. My vision is to keep evolving as a versatile tech professional, collaborating with clients, companies, and startups to build impactful and future-ready digital products.
+   <!-- About Section (Based on your screenshot) -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-heading">ABOUT ME</h2>
+                <div class="about-card">
+                    <!-- Text content starts here -->
+                    <div class="about-content">
+                        <p>
+                            I’m Stanley Akegbeotu, a creative and motivated web developer passionate about building AI-powered web applications, websites and digital solutions that make a real-world impact. With hands-on experience in tools like git & github, vscode, WordPress, Firebase, Figma, and AI platforms, I design and prototype projects that are both functional and user-focused.
+                        </p>
+                        <p>
+                            I specialize in creating and prototyping modern applications that blend artificial intelligence, web technologies, and user-friendly design. My portfolio includes projects like a healthcare referral system, an AI companion app, and AI-powered image editing tools, all showcasing my ability to integrate creativity with technical execution. Skilled in platforms such as WordPress, Firebase Studio, v0.dev, and Gemini AI, I also bring knowledge of Google Workspace, Microsoft Office, and ad platforms like TikTok Ads.
+                        </p>
+                        <p>
+                            As an ALX-trained learner with growing expertise in frontend development, project management, and teamwork, I am constantly improving my skills in GitHub, Slack, and Sheets while working toward becoming a full-stack developer and exploring machine learning. My vision is to keep evolving as a versatile tech professional, collaborating with clients, companies, and startups to build impactful and future-ready digital products.
+                        </p>
+                    </div>
+                    <!-- Text content ends here -->
+                </div>
+            </div>
+        </section>
 
-</p>
-        </div>
-    </section>
     
     <!-- Skills/Services Section -->
     <section id="skills" class="section container">
@@ -983,8 +1053,8 @@
     </section>
 
     <!-- Certifications Section -->
-    <section id="certifications" class="section container">
-        <h2 class="section-heading">CERTIFICATIONS (CLICK TO FLIP)</h2>
+    <section id="certifications" class=" section container">
+        <h2 class="section-heading">CERTIFICATIONS </h2>
         <div id="certifications-grid" class="grid-3">
             <!-- Certificate cards will be injected here by JavaScript -->
         </div>
@@ -996,12 +1066,12 @@
         <div class="projects-grid">
             
             <div class="project-card rounded-lg border-code">
-                <img src="https://savanna.alxafrica.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUFMS0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0b9c85fa90eccdb0c14b1a0abe070634b6907af1/113-alx-ai-starter-kit-certificate-stanley-akegbeotu.png" alt="AI Sales Page" class="rounded-lg" style="margin-bottom: 0.5rem;">
+                <img src="Screenshot (48).png" alt="AI Sales Page" class="rounded-lg" style="margin-bottom: 0.5rem;">
                 <h3>AI Sales Page Assistant</h3>
                 <small>Prototype | v0.dev + Gemini</small>
-                <p style="font-size: 0.9rem; margin: 0.75rem 0;">A rapid prototype featuring an interactive chat assistant embedded on a landing page to drive conversion.</p>
+                <p style="font-size: 0.9rem; margin: 0.75rem 0;">An  E-commerce website for start-ups</p>
                 <div class="project-links">
-                    <a href="https://v0.app/chat/sales-page-component-cm3gHDVfYAg" target="_blank"><i class="fas fa-external-link-alt"></i> View Demo</a>
+                    <a href="https://stanleyakegbeotu.github.io/ecom-page/" target="_blank"><i class="fas fa-external-link-alt"></i> View Demo</a>
                 </div>
             </div>
 
@@ -1125,11 +1195,9 @@
             {
                 name: "Certificate for Professional Foundations - 30th September 2025 ",
                 image: "https://savanna.alxafrica.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBN3l3TVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0e9f96b4719d2563b09bec845cab7da46edd779f/89-professional-foundations-certificate-stanley-akegbeotu.png",
-                details: "In-depth training on building responsive websites using HTML5, CSS3, and modern design principles. Focus on mobile-first design, media queries, and flexible layouts. (Completed Q1 2024)",
-                issuer: "ALX Africa"
-            },
-            
-            
+                issuer: "ALX Africa",
+                details: "In-depth training on building responsive websites using HTML5, CSS3, and modern design principles. Focus on mobile-first design, media queries, and flexible layouts. (Completed Q1 2024)"
+            }
         ];
 
         // Global DOM Elements
@@ -1430,9 +1498,77 @@ function renderCertifications() {
             renderCertifications(); // RENDER CERTIFICATES FIRST
             resizeCanvas();
             setTheme(currentTheme);
-            animateCanvas(); 
-        }
+            animateCanvas();
+         // --- 7. Water Drop Animation Logic ---
 
-    </script>
+            const waterContainer = document.getElementById('water-effect-container');
+            const waterLevel = document.getElementById('water-level');
+
+            // Parameters
+            const DROP_INTERVAL_MS = 5000; // 5 seconds (as requested)
+            // Time in seconds it should take to fully fill. 300s = 5 minutes.
+            const SCREEN_FILL_TIME_S = 300; 
+            const MAX_LEVEL_HEIGHT = 100; // Max percentage (100vh)
+
+            // Calculation: How much height (in %) increases per drop
+            // Total Drops to Fill: (300 seconds * 1000 ms/s) / 5000 ms/drop = 60 drops
+            const DROPS_TO_FILL = SCREEN_FILL_TIME_S * 1000 / DROP_INTERVAL_MS;
+            const HEIGHT_PER_DROP = MAX_LEVEL_HEIGHT / DROPS_TO_FILL; 
+
+            let currentLevel = 0;
+
+            const updateWaterLevel = () => {
+                currentLevel += HEIGHT_PER_DROP;
+
+                if (currentLevel >= MAX_LEVEL_HEIGHT) {
+                    // Reset the process when full
+                    currentLevel = 0;
+                    // Flash the fill color slightly before reset to indicate the "full" state
+                    waterLevel.style.transition = 'height 0.3s ease-in-out, background-color 0.3s';
+                    waterLevel.style.backgroundColor = 'rgba(60, 197, 255, 0.2)'; // More opaque flash
+
+                    setTimeout(() => {
+                        waterLevel.style.height = '0%';
+                        // Reset to slow growth and normal transparency after the flash
+                        setTimeout(() => {
+                            waterLevel.style.transition = `height ${DROP_INTERVAL_MS / 1000}s linear, background-color 0.5s`;
+                            waterLevel.style.backgroundColor = 'rgba(60, 197, 255, 0.05)';
+                        }, 50); // Small delay to allow height reset to take effect visually
+                    }, DROP_INTERVAL_MS); // Wait for the drop to finish its cycle before reset
+                    return;
+                }
+
+                // Apply the height update with a transition that matches the interval for smooth growth
+                waterLevel.style.transition = `height ${DROP_INTERVAL_MS / 1000}s linear`;
+                waterLevel.style.height = `${currentLevel}vh`;
+            };
+
+
+            const createDrop = () => {
+                const drop = document.createElement('div');
+                drop.classList.add('water-drop');
+
+                // Apply a random slight horizontal offset from the corner for subtle variation
+                const randomOffset = Math.random() * 50; // Random offset between 0 to 50px
+                drop.style.left = `${randomOffset}px`;
+
+                waterContainer.appendChild(drop);
+
+                // Update the water level upon drop creation
+                updateWaterLevel();
+
+                // Clean up the element after the animation finishes (4.5s defined in CSS)
+                setTimeout(() => {
+                    drop.remove();
+                }, 4500);
+            };
+
+            // Start the drop interval
+            setInterval(createDrop, DROP_INTERVAL_MS);
+
+            // Initial call to start the process immediately
+            createDrop();
+        } 
+        </script>
 </body>
 </html>
