@@ -8,11 +8,9 @@
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <style>
+<style>
         /*
-        ========================================
-        1. Global Variables & Base Styles
-        (Mobile-First: All fixed widths are forbidden)
+        1. Global Variables & Base Styles (Mobile-First: All fixed widths are forbidden)
         ========================================
         */
         :root {
@@ -58,12 +56,11 @@
             min-height: 100vh;
             position: relative;
             transition: background-color 0.5s, color 0.5s;
-            
             /* --- SCROLLBAR HIDING CSS (BODY LEVEL) --- */
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        
+
         /* Links and Buttons */
         a {
             color: var(--color-accent);
@@ -90,7 +87,6 @@
         .border-code { border: 1px solid rgba(56, 163, 165, 0.3); }
         .light .border-code { border-color: rgba(0, 119, 182, 0.3); }
 
-
         /* HEADER ANIMATION */
         @keyframes text-glow {
             0%, 100% { text-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent); }
@@ -116,7 +112,7 @@
             background-color: rgba(234, 239, 244, 0.95);
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         header .logo {
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.2rem;
@@ -175,7 +171,6 @@
         }
         nav a:last-child { border-bottom: none; }
 
-
         /* HERO SECTION */
         #hero {
             padding: 4rem 0;
@@ -196,7 +191,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; 
+            overflow: hidden;
             background-color: var(--color-surface);
             transition: box-shadow 0.5s, border-color 0.5s, background-color 0.5s;
         }
@@ -270,20 +265,26 @@
             grid-template-columns: 1fr; /* Mobile: Single column stack */
             gap: 1.5rem;
             margin-top: 2rem;
+            /* === CHANGE 1: CRITICAL GRID STACKING FIX === */
+            /* This ensures children (the cards) can overlap neighboring grid items when flipped (high z-index) */
+            position: relative;
+            overflow: visible;
         }
 
         /* ==================================== */
         /* FLIPPABLE CARD STYLES (Shared) */
         /* ==================================== */
         .skill-card {
-            perspective: 1000px; /* Gives the 3D effect */
+            perspective: 1000px;
             cursor: pointer;
             padding: 0;
             border: none;
             box-shadow: none;
-            height: 300px; /* Consistent height for all flippable cards */
+            height: 300px;
+            /* ADDED: Ensures 3D space is preserved in this element */
+            transform-style: preserve-3d;
         }
-        
+
         .card-inner {
             position: relative;
             width: 100%;
@@ -297,17 +298,18 @@
         .skill-card:hover .card-inner {
             box-shadow: 0 0 10px var(--color-accent);
         }
-        
+
         /* Flip state */
         .skill-card.flipped .card-inner {
             transform: rotateY(180deg);
         }
-        
+
         /* Position front and back faces */
         .card-front, .card-back {
             position: absolute;
             width: 100%;
             height: 100%;
+            /* === CHANGE 2: Ensure front face completely vanishes when rotated === */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             background-color: var(--color-surface);
@@ -318,16 +320,16 @@
             flex-direction: column;
             text-align: center;
         }
-        
+
         /* Back Face (Shared styling for text) */
         .card-back {
             transform: rotateY(180deg);
-            text-align: left;
+            text-align: center;
             overflow-y: auto;
             opacity: 0.95;
-            align-items: stretch; 
+            align-items: stretch;
         }
-        
+
         /* Scrollbar styling for the back face */
         .card-back::-webkit-scrollbar {
             width: 5px;
@@ -336,7 +338,7 @@
             background-color: var(--color-accent);
             border-radius: 10px;
         }
-        
+
         .card-back h4 {
             color: var(--color-link);
             margin-top: 0;
@@ -347,7 +349,7 @@
             margin-bottom: 0.75rem;
             text-align: center;
         }
-        
+
         /* ==================================== */
         /* SKILL CARD SPECIFIC STYLES */
         /* ==================================== */
@@ -391,25 +393,33 @@
             color: var(--color-link);
             font-weight: bold;
             display: inline-block;
-            margin-right: 0.5em; 
+            margin-right: 0.5em;
         }
-        
+
         /* ==================================== */
         /* CERTIFICATION CARD SPECIFIC STYLES */
         /* ==================================== */
+        .cert-card {
+            z-index: 1; /* Default z-index for normal flow */
+        }
         .cert-front {
             /* Overrides card-front padding and alignment for image display */
             justify-content: flex-start;
             padding: 0;
             position: relative;
-            text-align: center; 
+            text-align: center;
+        }
+
+        /* === CHANGE 3: The ultimate Z-INDEX fix (was already added, but important to confirm) === */
+        .cert-card.flipped {
+            z-index: 10;
         }
 
         .cert-image {
             width: 100%;
-            height: 75%; /* Image takes 75% of card height */
+            height: 65%; /* Image takes 65% of card height */
             object-fit: cover;
-            border-radius: 0.5rem 0.5rem 0 0; 
+            border-radius: 0.5rem 0.5rem 0 0;
         }
 
         .cert-footer {
@@ -418,17 +428,17 @@
             left: 0;
             width: 100%;
             height: 25%; /* Footer takes 25% of card height */
-            background-color: var(--color-surface); 
+            background-color: var(--color-surface);
             border-top: 1px solid var(--color-accent);
             box-sizing: border-box;
-            border-radius: 0 0 0.5rem 0.5rem; 
-            
+            border-radius: 0 0 0.5rem 0.5rem;
+
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 0.5rem 1rem;
-            
+
             font-size: 0.9rem;
             font-weight: 700;
             font-family: 'Share Tech Mono', monospace;
@@ -442,10 +452,14 @@
             padding: 1rem;
             margin-bottom: 1.5rem;
             transition: background-color 0.3s;
+            border-radius: 0.5rem; /* Ensure rounded corners */
+            border: 1px solid rgba(56, 163, 165, 0.1); /* Subtle border */
         }
         .project-card:hover {
             background-color: var(--color-accent);
             color: var(--color-bg);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         .project-card:hover .text-accent {
             color: var(--color-surface);
@@ -458,6 +472,7 @@
             height: auto;
             border: 1px solid rgba(56, 163, 165, 0.1);
             transition: border-color 0.5s;
+            border-radius: 0.3rem;
         }
         .project-card h3 {
             font-family: 'Share Tech Mono', monospace;
@@ -495,7 +510,7 @@
             opacity: 0.2;
             transition: opacity 1s;
         }
-        
+
         /* ==================================== */
         /* MODAL STYLES */
         /* ==================================== */
@@ -510,14 +525,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0; 
-            visibility: hidden; 
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s;
         }
         .modal-overlay:not(.hidden) {
             opacity: 1;
             visibility: visible;
         }
+        /* Important: keep the display none on the .hidden class */
         .modal-overlay.hidden {
             display: none;
         }
@@ -527,7 +543,7 @@
             padding: 2rem;
             border-radius: 0.75rem;
             max-width: 90%;
-            width: 450px; 
+            width: 450px;
             box-shadow: 0 5px 20px rgba(56, 163, 165, 0.5);
             position: relative;
             border: 1px solid var(--color-accent);
@@ -549,7 +565,7 @@
         .modal-close:hover {
             color: #ff5858;
         }
-        
+
         /* FORM STYLES */
         #form-container {
             transition: opacity 0.5s ease;
@@ -588,10 +604,10 @@
         .form-submit-button {
             width: 100%;
             margin-top: 1.5rem;
-            display: block; 
+            display: block;
             text-align: center;
         }
-        
+
         /* SUCCESS SCREEN & PARTICLE ANIMATION */
         #success-screen {
             font-family: 'Share Tech Mono', monospace;
@@ -640,7 +656,6 @@
         .hidden { display: none !important; }
 
         /*
-        ========================================
         2. Desktop/Tablet (Min-width: 768px)
         ========================================
         */
@@ -716,7 +731,7 @@
 
     <!-- Header & Navigation -->
     <header>
-        <div class="logo"><span class="text-accent">S.A</span>://CONSOLE</div>
+        <div class="logo"><span class="text-accent">Stanley AKEGBEOTU</div>
         <div class="header-controls">
             <!-- Mode Toggle Button -->
             <button id="mode-toggle" aria-label="Toggle dark and light mode">
@@ -743,29 +758,36 @@
         
         <!-- AVATAR PLACEHOLDER -->
         <div class="avatar-placeholder">
-            <i class="fas fa-user-astronaut"></i> 
-        </div>
+    <!-- 
+    CRITICAL: The image should be perfectly square (e.g., 200x200) for best results.
+    We are using the 'avatar-placeholder' CSS class to handle the circular crop and border.
+    -->
+    <img src="https://lh3.googleusercontent.com/sitesv/AAzXCkcSl7Q24TCBj52OqoacQ24307JJdfqx7IxBQf1CWAz_sQ2vqmB7-mFEgjFD5ifUv54-7DdlRH3cf21k1OXog54Z99tluAGi3ljexti84R8k7r-FDlBTSl0cG1BEP1RZuvhrlTcRZFaiTDOdFPbfJDV1-pP9Oq8vzrUaCXj2GO0GaFvbS95QGMDx8qs9JDUJmlZNlaV29pWJn7V1OE8b1xSwP9U010GFgcj1sME=w1280" 
+         alt="Stanley Akegbeotu Profile Picture" 
+         style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+
 
         <p class="welcome-line">> status: online | user: stanley</p>
         <h1>
-            I DESIGN & PROTOTYPE <span class="text-accent">AI-POWERED</span> <span style="font-size: 0.8em;">SOLUTIONS</span>
+            I CODE, DESIGN & PROTOTYPE <span class="text-accent">AI-POWERED</span> <span style="font-size: 0.8em;">SOLUTIONS</span>
         </h1>
         <p class="bio-summary">
-            Aspiring Full-Stack Developer leveraging modern tools (Firebase, Supabase, LLMs) to rapidly build and deploy functional applications that solve real-world problems.
-        </p>
+           Hi, I’m Stanley Akegbeotu, a front-end web developer , graphic designer, and AI enthusiast. Passionate about crafting web apps, high quality websites, AI-powered solutions, and digital products that solve real-world problems for businesses and individuals.    </p>
         <a href="#contact" class="cta-button">INITIATE PROJECT &rarr;</a>
     </section>
 
     <!-- About Section -->
     <section id="about" class="section container">
-        <h2 class="section-heading">ABOUT</h2>
+        <h2 class="section-heading">ABOUT ME</h2>
         <div class="bg-surface rounded-lg border-code" style="padding: 1.5rem;">
             <p>
-                My background centers on combining strategic thinking with technical execution. I focus on the rapid iteration of **Minimum Viable Products (MVPs)**, prioritizing functionality and user feedback from day one. I'm proficient in utilizing **v0.dev and Gemini API** for generating and integrating complex UI components and AI features quickly.
-            </p>
+                I’m Stanley Akegbeotu, a creative and motivated web developer passionate about building AI-powered web applications , websits and digital solutions that make a real-world impact. With hands-on experience in tools like git & github , vscode, WordPress, Firebase, Figma, and AI platforms, I design and prototype projects that are both functional and user-focused.
+ </p>
             <p>
-                My passion lies in projects that bridge technology and human needs, particularly within the **Healthcare and Business Automation** sectors.
-            </p>
+                I specialize in creating and prototyping modern applications that blend artificial intelligence, web technologies, and user-friendly design. My portfolio includes projects like a healthcare referral system, an AI companion app, and AI-powered image editing tools, all showcasing my ability to integrate creativity with technical execution. Skilled in platforms such as WordPress, Firebase Studio, v0.dev, and Gemini AI, I also bring knowledge of Google Workspace, Microsoft Office, and ad platforms like TikTok Ads. As an ALX-trained learner with growing expertise in frontend development, project management, and teamwork, I am constantly improving my skills in GitHub, Slack, and Sheets while working toward becoming a full-stack developer and exploring machine learning. My vision is to keep evolving as a versatile tech professional, collaborating with clients, companies, and startups to build impactful and future-ready digital products.
+
+</p>
         </div>
     </section>
     
@@ -779,7 +801,7 @@
                 <div class="card-inner">
                     <div class="card-front">
                         <i class="fas fa-laptop-code"></i>
-                        <h3>Frontend Development</h3>
+                        <h3>Frontend web Development</h3>
                         <ul class="skill-list">
                             <li>HTML, CSS, JavaScript (ES6+)</li>
                             <li>React.js, Next.js (basics)</li>
@@ -789,7 +811,7 @@
                     <div class="card-back">
                         <h4>Frontend Proficiency</h4>
                         <p><strong>Level:</strong> Proficient</p>
-                        <p style="font-size: 0.9rem;">Proficient in modern web standards (HTML5, CSS3, ES6+). Extensive experience with component-based architecture using **React.js** for dynamic user interfaces and styling with **TailwindCSS** for rapid, responsive development.</p>
+                        <p style="font-size: 0.9rem;">Proficient in modern web standards (HTML5, CSS3, ES6+). Extensive experience with component-based architecture using React.js for dynamic user interfaces and styling with TailwindCSS for rapid, responsive development.</p>
                     </div>
                 </div>
             </div>
@@ -802,6 +824,7 @@
                         <h3>AI & Automation Tools</h3>
                         <ul class="skill-list">
                             <li>Gemini API Integration</li>
+                            <li>AI Prototyping</li>
                             <li>v0.dev for UI Generation</li>
                             <li>No-Code Automation Tools</li>
                         </ul>
@@ -809,7 +832,7 @@
                     <div class="card-back">
                         <h4>AI & Automation Pipeline</h4>
                         <p><strong>Level:</strong> Pioneering</p>
-                        <p style="font-size: 0.9rem;">A strong focus on **AI prototyping and integration**. Experienced in connecting applications to **Gemini API** for custom features and utilizing platforms like **v0.dev** to accelerate UI/UX generation, streamlining the MVP creation process.</p>
+                        <p style="font-size: 0.9rem;">A strong focus on AI prototyping and integration. Experienced in connecting applications to Gemini API for custom features and utilizing platforms like v0.dev, lovable ai , firebase studio to accelerate UI/UX generation, streamlining the MVP creation process.</p>
                     </div>
                 </div>
             </div>
@@ -823,13 +846,14 @@
                         <ul class="skill-list">
                             <li>Firebase (Firestore, Auth, Hosting)</li>
                             <li>Supabase (basics)</li>
+                            <li>github hosting</li>
                             <li>Google APIs</li>
                         </ul>
                     </div>
                     <div class="card-back">
                         <h4>Backend Proficiency</h4>
                         <p><strong>Level:</strong> Intermediate</p>
-                        <p style="font-size: 0.9rem;">Hands-on experience building serverless applications with **Firebase**, utilizing Firestore for scalable real-time data and Firebase Hosting for deployment. Basic understanding of **Supabase** features for PostgreSQL-backed projects.</p>
+                        <p style="font-size: 0.9rem;">Hands-on experience building serverless applications with Firebase, utilizing Firestore for scalable real-time data and Firebase Hosting for deployment. Basic understanding of Supabase features for PostgreSQL-backed projects.</p>
                     </div>
                 </div>
             </div>
@@ -849,7 +873,7 @@
                     <div class="card-back">
                         <h4>Version Control Proficiency</h4>
                         <p><strong>Level:</strong> Solid</p>
-                        <p style="font-size: 0.9rem;">Solid understanding and daily practical use of **Git** for version control and collaboration via **GitHub**. Proficient in all essential tasks including branching, merging, pull requests, and resolving conflicts. **VS Code** is my primary development environment, where I leverage extensions for maximum efficiency.</p>
+                        <p style="font-size: 0.9rem;">Solid understanding and daily practical use of Git for version control and collaboration via GitHub. Proficient in all essential tasks including branching, merging, pull requests, and resolving conflicts. VS Code is my primary development environment, where I leverage extensions for maximum efficiency.</p>
                     </div>
                 </div>
             </div>
@@ -890,7 +914,7 @@
                     <div class="card-back">
                         <h4>Visual Design Proficiency</h4>
                         <p><strong>Level:</strong> Creator</p>
-                        <p style="font-size: 0.9rem;">Skilled in graphic design, able to **generate, build, and write** visual content for any project need. Proficient in **Canva and Picsart** for creating compelling branding, marketing materials, and high-quality image assets that complement my development work.</p>
+                        <p style="font-size: 0.9rem;">Skilled in graphic design, able to generate, build, and write visual content for any project need. Proficient in Canva and Picsart for creating compelling branding, marketing materials, and high-quality image assets that complement my development work.</p>
                     </div>
                 </div>
             </div>
@@ -910,7 +934,7 @@
                     <div class="card-back">
                         <h4>Tools & Workflow Mastery</h4>
                         <p><strong>Level:</strong> Expert</p>
-                        <p style="font-size: 0.9rem;">Highly organized and proficient in core productivity tools, including the **Google Workspace** and **Microsoft Office Suite**. Competent in project tracking and modern remote collaboration tools (Slack, Zoom, Trello/Notion).</p>
+                        <p style="font-size: 0.9rem;">Highly organized and proficient in core productivity tools, including the Google Workspace and Microsoft Office Suite. Competent in project tracking and modern remote collaboration tools (Slack, Zoom, Trello/Notion).</p>
                     </div>
                 </div>
             </div>
@@ -930,7 +954,7 @@
                     <div class="card-back">
                         <h4>Structural Design Skills</h4>
                         <p><strong>Level:</strong> Proficient</p>
-                        <p style="font-size: 0.9rem;">Skilled in structural design principles. Uses **Figma** for creating effective wireframes and high-fidelity mockups. Focuses on **UX analysis** and design thinking to ensure applications are intuitive, accessible, and user-friendly.</p>
+                        <p style="font-size: 0.9rem;">Skilled in structural design principles. Uses Figma for creating effective wireframes and high-fidelity mockups. Focuses on UX analysis and design thinking to ensure applications are intuitive, accessible, and user-friendly.</p>
                     </div>
                 </div>
             </div>
@@ -950,7 +974,7 @@
                     <div class="card-back">
                         <h4>Marketing & Growth Experience</h4>
                         <p><strong>Level:</strong> Experienced</p>
-                        <p style="font-size: 0.9rem;">Practical experience in digital advertising and growth strategy, specifically managing and optimizing campaigns across major platforms: **Facebook Ads, Instagram Ads, and TikTok Ads**.</p>
+                        <p style="font-size: 0.9rem;">Practical experience in digital advertising and growth strategy, specifically managing and optimizing campaigns across major platforms: Facebook Ads, Instagram Ads, and TikTok Ads.</p>
                     </div>
                 </div>
             </div>
@@ -972,7 +996,7 @@
         <div class="projects-grid">
             
             <div class="project-card rounded-lg border-code">
-                <img src="https://placehold.co/600x400/161B22/38A3A5?text=AI+SALES+ASSISTANT" alt="AI Sales Page" class="rounded-lg" style="margin-bottom: 0.5rem;">
+                <img src="https://savanna.alxafrica.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUFMS0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0b9c85fa90eccdb0c14b1a0abe070634b6907af1/113-alx-ai-starter-kit-certificate-stanley-akegbeotu.png" alt="AI Sales Page" class="rounded-lg" style="margin-bottom: 0.5rem;">
                 <h3>AI Sales Page Assistant</h3>
                 <small>Prototype | v0.dev + Gemini</small>
                 <p style="font-size: 0.9rem; margin: 0.75rem 0;">A rapid prototype featuring an interactive chat assistant embedded on a landing page to drive conversion.</p>
@@ -1093,23 +1117,19 @@
         // Certificate data array - Update these values with your actual info and image URLs
         const certificationsData = [
             {
-                name: "Google AI Essentials",
-                image: "https://placehold.co/600x450/161B22/58A6FF?text=AI+Essentials+Cert",
-                details: "Issued by Google. Covered fundamental concepts of AI, machine learning pipelines, and responsible AI practices. Focus on integrating generative models into business workflows. (Completed Q3 2024)",
-                issuer: "Google"
+                name: "Certificate for ALX AI Starter Kit - 22nd May 2025",
+                image: "https://savanna.alxafrica.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUFMS0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0b9c85fa90eccdb0c14b1a0abe070634b6907af1/113-alx-ai-starter-kit-certificate-stanley-akegbeotu.png",
+                issuer: "ALX Africa",
+                details: "Completed the ALX AI Starter Kit program, gaining foundational knowledge in AI concepts, tools, and applications; covered topics such as AI fundamentals, machine learning basics, and practical AI use cases. (Completed May 2025)"
             },
             {
-                name: "Firebase Development Fundamentals",
-                image: "https://placehold.co/600x450/161B22/58A6FF?text=Firebase+Cert",
-                details: "Comprehensive course on building full-stack applications using Firebase: Firestore (NoSQL), Authentication, Cloud Functions (basics), and Hosting. Essential for MVP deployment. (Completed Q4 2023)",
-                issuer: "Code Academy"
+                name: "Certificate for Professional Foundations - 30th September 2025 ",
+                image: "https://savanna.alxafrica.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBN3l3TVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0e9f96b4719d2563b09bec845cab7da46edd779f/89-professional-foundations-certificate-stanley-akegbeotu.png",
+                details: "In-depth training on building responsive websites using HTML5, CSS3, and modern design principles. Focus on mobile-first design, media queries, and flexible layouts. (Completed Q1 2024)",
+                issuer: "ALX Africa"
             },
-            {
-                name: "Advanced Tailwind CSS",
-                image: "https://placehold.co/600x450/161B22/58A6FF?text=Tailwind+Mastery",
-                details: "Mastery of utility-first CSS, responsive design patterns, custom configuration, and advanced layout techniques (Flex/Grid). Key to rapid, production-ready styling. (Completed Q2 2024)",
-                issuer: "UI Path"
-            }
+            
+            
         ];
 
         // Global DOM Elements
@@ -1156,23 +1176,26 @@
         }
 
         // ----------------------------------------------------
-        // 3. Certification Card Rendering
-        // ----------------------------------------------------
-        function renderCertifications() {
-            const grid = document.getElementById('certifications-grid');
-            if (!grid) return;
+// 3. Certification Card Rendering
+// ----------------------------------------------------
+function renderCertifications() {
+    const grid = document.getElementById('certifications-grid');
+    if (!grid) return;
 
-            certificationsData.forEach(cert => {
-                const card = document.createElement('div');
-                card.className = 'skill-card'; // Reuse skill-card class for flip functionality
-                card.setAttribute('onclick', 'flipCard(this)');
+    certificationsData.forEach(cert => {
+        const card = document.createElement('div');
+        
+        // CHANGED: Added 'cert-card' so the z-index fix works
+        card.className = 'skill-card cert-card reveal-item'; 
+        
+        card.setAttribute('onclick', 'flipCard(this)');
 
                 card.innerHTML = `
                     <div class="card-inner">
                         <!-- FRONT FACE: Image and Name (Footer) -->
                         <div class="card-front cert-front">
                             <img src="${cert.image}" alt="${cert.name} Certificate" class="cert-image" 
-                                 onerror="this.onerror=null; this.src='https://placehold.co/600x450/38A3A5/0D1117?text=Image+Unavailable';">
+                                 onerror="this.onerror=null; this.src=https://savanna.alxafrica.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUFMS0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0b9c85fa90eccdb0c14b1a0abe070634b6907af1/113-alx-ai-starter-kit-certificate-stanley-akegbeotu.pnghttps://placehold.co/600x450/38A3A5/0D1117?text=Image+Unavailable';">
                             <div class="cert-footer">
                                 <span>${cert.name}</span>
                                 <small style="opacity: 0.6; margin-top: 0.1rem; font-family: Inter;">Issued by ${cert.issuer}</small>
